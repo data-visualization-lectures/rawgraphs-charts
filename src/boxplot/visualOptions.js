@@ -55,6 +55,19 @@ export const visualOptions = {
     group: 'chart',
   },
 
+  SortXAxisBy: {
+    type: 'text',
+    label: 'Sort X axis by',
+    group: 'chart',
+    options: [
+      'Name',
+      'Median (descending)',
+      'Median (ascending)',
+      'Original',
+    ],
+    default: 'Name',
+  },
+
   xAxisLabelRotation: {
     type: 'text',
     label: 'X axis label rotation',

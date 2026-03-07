@@ -29,6 +29,7 @@ export function render(
     iqrMultiplier, // to compute otuliers
     dotsDiameter,
     yOrigin,
+    SortXAxisBy,
     xAxisLabelRotation,
     //legend
     showLegend,
@@ -74,7 +75,17 @@ export function render(
 
   const yScale = d3.scaleLinear().domain(yDomain).nice().range([chartHeight, 0])
 
-  const groupsDomain = [...new Set(data.map((d) => d.group))]
+  const groupsWithMedian = d3.rollups(
+    data, v => d3.median(v, d => d.value), d => d.group
+  )
+  const groupSortings = {
+    'Name': (a, b) => d3.ascending(a[0], b[0]),
+    'Median (descending)': (a, b) => d3.descending(a[1], b[1]),
+    'Median (ascending)': (a, b) => d3.ascending(a[1], b[1]),
+    'Original': () => 0,
+  }
+  groupsWithMedian.sort(groupSortings[SortXAxisBy] || groupSortings['Name'])
+  const groupsDomain = groupsWithMedian.map(d => d[0])
 
   const xScale = d3
     .scalePoint()
