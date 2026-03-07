@@ -23,6 +23,7 @@ export function render(
     // chart options
     padding,
     barsOrientation,
+    xAxisLabelRotation,
     sortBarsBy,
     // series options
     columnsNumber,
@@ -37,6 +38,8 @@ export function render(
     showLegend,
     legendWidth,
   } = visualOptions
+
+  const rotation = Number(xAxisLabelRotation)
 
   const margin = {
     top: marginTop,
@@ -290,6 +293,14 @@ export function render(
             .text(mapping['bars'].value)
             .styles(styles.axisLabel)
         )
+
+      if (rotation !== 0) {
+        xAxis.selectAll('.tick text')
+          .attr('transform', `rotate(${-rotation})`)
+          .attr('text-anchor', 'end')
+          .attr('dx', '-0.8em')
+          .attr('dy', '0.15em')
+      }
 
       const yAxis = selection
         .append('g')

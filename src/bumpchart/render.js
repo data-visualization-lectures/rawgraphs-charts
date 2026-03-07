@@ -26,6 +26,7 @@ export function render(
     streamsOffset,
     interpolation,
     showYAxis,
+    xAxisLabelRotation,
     // series options
     columnsNumber,
     useSameScale,
@@ -43,6 +44,8 @@ export function render(
     labelsType,
     showLabelsOutline,
   } = visualOptions
+
+  const rotation = Number(xAxisLabelRotation)
 
   const margin = {
     top: marginTop,
@@ -294,6 +297,14 @@ export function render(
       .attr('id', 'xAxis')
       .attr('transform', 'translate(0,' + serieHeight + ')')
       .call(d3.axisBottom(xScale).tickSizeOuter(0))
+
+    if (rotation !== 0) {
+      xAxis.selectAll('.tick text')
+        .attr('transform', `rotate(${-rotation})`)
+        .attr('text-anchor', 'end')
+        .attr('dx', '-0.8em')
+        .attr('dy', '0.15em')
+    }
 
     if (showYAxis) {
       const yAxis = selection

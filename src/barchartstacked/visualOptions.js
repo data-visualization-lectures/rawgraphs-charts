@@ -76,6 +76,20 @@ export const visualOptions = {
     default: 'Name',
   },
 
+  xAxisLabelRotation: {
+    type: 'text',
+    label: 'X axis label rotation',
+    default: '0',
+    group: 'chart',
+    options: [
+      { label: '0°', value: '0' },
+      { label: '15°', value: '15' },
+      { label: '30°', value: '30' },
+      { label: '45°', value: '45' },
+      { label: '60°', value: '60' },
+    ],
+  },
+
   useSameScale: {
     type: 'boolean',
     label: 'Use same scale',

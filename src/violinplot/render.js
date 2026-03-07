@@ -26,12 +26,15 @@ export function render(
     interpolation,
     showDots,
     dotsDiameter,
+    xAxisLabelRotation,
     //legend
     showLegend,
     legendWidth,
     // color dimension option, defined in visualOptions.js
     colorScale,
   } = visualOptions
+
+  const rotation = Number(xAxisLabelRotation)
 
   // Margin convention
   const margin = {
@@ -123,17 +126,27 @@ export function render(
     .text(mapping['value'].value)
     .styles(styles.axisLabel)
 
-  svg
+  const xAxisG = svg
     .append('g')
     .attr('id', 'x axis')
     .attr('transform', 'translate(0,' + chartHeight + ')')
     .call(d3.axisBottom(xScale))
+
+  xAxisG
     .append('text')
     .attr('x', chartWidth)
     .attr('dy', -5)
     .attr('text-anchor', 'end')
     .text(mapping['group'].value)
     .styles(styles.axisLabel)
+
+  if (rotation !== 0) {
+    xAxisG.selectAll('.tick text')
+      .attr('transform', `rotate(${-rotation})`)
+      .attr('text-anchor', 'end')
+      .attr('dx', '-0.8em')
+      .attr('dy', '0.15em')
+  }
 
   let shapes = svg
     .append('g')

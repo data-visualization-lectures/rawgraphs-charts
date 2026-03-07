@@ -24,6 +24,7 @@ export function render(
     barsPadding,
     setsPadding,
     SortXAxisBy,
+    xAxisLabelRotation,
     // series options
     columnsNumber,
     useSameScale,
@@ -37,6 +38,8 @@ export function render(
     showLegend,
     legendWidth,
   } = visualOptions
+
+  const rotation = Number(xAxisLabelRotation)
 
   const margin = {
     top: marginTop,
@@ -221,6 +224,14 @@ export function render(
       .attr('id', 'xAxis')
       .attr('transform', 'translate(0,' + sizeScale(0) + ')')
       .call(d3.axisBottom(setScale).tickSizeOuter(0))
+
+    if (rotation !== 0) {
+      xAxis.selectAll('.tick text')
+        .attr('transform', `rotate(${-rotation})`)
+        .attr('text-anchor', 'end')
+        .attr('dx', '-0.8em')
+        .attr('dy', '0.15em')
+    }
 
     const yAxis = selection
       .append('g')

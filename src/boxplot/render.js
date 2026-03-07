@@ -29,6 +29,7 @@ export function render(
     iqrMultiplier, // to compute otuliers
     dotsDiameter,
     yOrigin,
+    xAxisLabelRotation,
     //legend
     showLegend,
     legendWidth,
@@ -37,6 +38,8 @@ export function render(
     // labels
     showValues,
   } = visualOptions
+
+  const rotation = Number(xAxisLabelRotation)
 
   // Margin convention
   const margin = {
@@ -117,11 +120,19 @@ export function render(
     .attr('dominant-baseline', 'hanging')
     .text(mapping['value'].value)
 
-  svg
+  const xAxisG = svg
     .append('g')
     .attr('id', 'x axis')
     .attr('transform', 'translate(0,' + chartHeight + ')')
     .call(d3.axisBottom(xScale))
+
+  if (rotation !== 0) {
+    xAxisG.selectAll('.tick text')
+      .attr('transform', `rotate(${-rotation})`)
+      .attr('text-anchor', 'end')
+      .attr('dx', '-0.8em')
+      .attr('dy', '0.15em')
+  }
 
   //append boxplots
 

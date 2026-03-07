@@ -25,6 +25,7 @@ export function render(
     showPoints,
     dotsDiameter,
     yOrigin,
+    xAxisLabelRotation,
     // ticks options
     xTicksAuto,
     xTicksAmount,
@@ -45,6 +46,8 @@ export function render(
     showLegend,
     legendWidth,
   } = visualOptions
+
+  const rotation = Number(xAxisLabelRotation)
 
   const margin = {
     top: marginTop,
@@ -279,7 +282,16 @@ export function render(
 
     const axisLayer = selection.append('g').attr('id', 'axis')
 
-    axisLayer.append('g').call(xAxis)
+    const xAxisG = axisLayer.append('g').call(xAxis)
+
+    if (rotation !== 0) {
+      xAxisG.selectAll('.tick text')
+        .attr('transform', `rotate(${-rotation})`)
+        .attr('text-anchor', 'end')
+        .attr('dx', '-0.8em')
+        .attr('dy', '0.15em')
+    }
+
     axisLayer.append('g').call(yAxis)
 
     // create a group for each line.
