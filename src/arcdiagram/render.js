@@ -71,13 +71,15 @@ export function render(svgNode, data, visualOptions, mapping, originalData) {
     }
   })
 
-  // size scale
+  const minRadius = minDiameter / 2
+  const maxRadius = maxDiameter / 2
+
   const sizeScale = d3
     .scaleSqrt()
     .domain([0, d3.max(graph.nodes, (d) => d[nodeSize])])
-    .range([minDiameter, maxDiameter])
+    .range([minRadius, maxRadius])
 
-  // widthScale (for nodes)
+  // widthScale (for links)
   const widthScale = d3
     .scaleLinear()
     .domain([0, d3.max(graph.links, (d) => d.value)])
@@ -93,7 +95,7 @@ export function render(svgNode, data, visualOptions, mapping, originalData) {
   let xPos = 0
   graph.nodes.forEach((d, i) => {
     d.x = xPos + sizeScale(d[nodeSize])
-    d.y = sameSide ? chartHeight - maxDiameter : chartHeight / 2
+    d.y = sameSide ? chartHeight - maxRadius : chartHeight / 2
     xPos += padding + sizeScale(d[nodeSize]) * 2
   })
 
